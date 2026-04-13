@@ -1,0 +1,88 @@
+{
+  "app_name": "Green Track",
+  "buttons_bar_cancel": "Annuler",
+  "buttons_bar_previous": "Précédent",
+  "buttons_bar_next": "Suivant",
+  "buttons_bar_continue": "Continuer",
+  "buttons_bar_compute": "Calculer",
+  "current_step": "Étape {currentStep} / {totalSteps}",
+  "@current_step": {
+    "placeholders": {
+      "currentStep": {
+        "type": "int"
+      },
+      "totalSteps": {
+        "type": "int"
+      }
+    }
+  },
+  "section_transports": "Déplacements",
+  "transports_car": "En voiture",
+  "transports_car_km_label": "Kilomètres / an :",
+  "transports_car_km_value": "{qty} km",
+  "@transports_car_km_value": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "transports_car_passengers": "Passagers en moyenne",
+  "transports_bike": "A vélo",
+  "transports_bike_type_electric": "Électrique",
+  "transports_bike_type_mechanical": "Musculaire",
+  "transports_bike_km_value": "{qty} km",
+  "@transports_bike_km_value": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "section_housing": "Logement principal",
+  "housing_characteristics": "Caractéristiques du logement",
+  "housing_characteristics_type_label": "Type :",
+  "housing_characteristics_type_apartment": "Appartement",
+  "housing_characteristics_type_house": "Maison",
+  "housing_characteristics_surface_label": "Surface (m2) :",
+  "housing_characteristics_surface_hint": "Ex : 30",
+  "housing_characteristics_surface_suffix": "m2",
+  "housing_heating_source": "Source de chauffage",
+  "housing_heating_source_electricity": "Électricité",
+  "housing_heating_source_gas": "Gaz",
+  "housing_heating_source_wood": "Bois",
+  "section_consumption": "Habitudes d'achat",
+  "consumption_food": "Alimentation",
+  "consumption_equipment": "Équipements et textiles",
+  "consumption_label": "Vous privilégiez :",
+  "consumption_new": "Neuf",
+  "consumption_second_hand": "Occasion",
+  "section_results": "Votre score",
+  "score_unit": "tonnes CO₂/an",
+  "score_label_excellent": "Excellent",
+  "score_label_good": "Bon",
+  "score_label_fair": "Médiocre",
+  "score_label_poor": "Mauvais",
+  "score_label_very_poor": "Exécrable",
+  "score_details_title": "Détail de votre score",
+  "score_details_label_transports": "Déplacements",
+  "score_details_label_housing": "Logement",
+  "score_details_label_consumption": "Consommation",
+  "score_details_value": "{value} t",
+  "@score_details_value": {
+    "placeholders": {
+      "value": {
+        "type": "double"
+      }
+    }
+  },
+  "score_compensation_title": "Compensation",
+  "score_compensation_label": "Il faudrait planter {trees} arbres pour compenser votre empreinte actuelle.",
+  "@score_compensation_label": {
+    "placeholders": {
+      "trees": {
+        "type": "int"
+      }
+    }
+  }
+}
