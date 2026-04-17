@@ -7,12 +7,14 @@ import 'package:green_track/pages/wizard_page/two_options_selector.dart';
 /// - [Slider]
 /// - [FilledButton]
 class WizardStepConsumption extends StatefulWidget {
+  const WizardStepConsumption({Key? key}) : super(key: key);
+
   @override
-  _WizardStepConsumptionState createState() => _WizardStepConsumptionState();
+  WizardStepConsumptionState createState() => WizardStepConsumptionState();
 }
 
-class _WizardStepConsumptionState extends  State<WizardStepConsumption> {
-  bool? isNew;
+class WizardStepConsumptionState extends  State<WizardStepConsumption> {
+  bool prefersNewPurchase = true;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,7 +54,7 @@ class _WizardStepConsumptionState extends  State<WizardStepConsumption> {
             children: [
               Text("Vous privilégiez:", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.primary)),
               SizedBox(height: 10),
-              TwoOptionSelector(leftLabel: "Neuf", rightLabel: "Occasion", isLeftSelected: isNew, onChanged: (v) {setState(() => isNew = v);}),
+              TwoOptionSelector(leftLabel: "Neuf", rightLabel: "Occasion", isLeftSelected: prefersNewPurchase, onChanged: (bool? v) {setState(() => prefersNewPurchase = v ?? true);} ),
             ],
           ),
         ),

@@ -10,15 +10,17 @@ import 'package:green_track/pages/wizard_page/two_options_selector.dart';
 /// - [FilledButton]
 /// 
 class WizardStepTransports extends StatefulWidget {
+  const WizardStepTransports({Key? key}) : super(key: key);
+
   @override
-  _WizardStepTransportsState createState() => _WizardStepTransportsState();
+  WizardStepTransportsState createState() => WizardStepTransportsState();
 }
 
-class _WizardStepTransportsState  extends State<WizardStepTransports>  {
+class WizardStepTransportsState extends State<WizardStepTransports> {
   double kilometrageVoiture = 12000;
   int selectedPassengers = 1;
   double kilometrageVelo = 1000;
-  bool? isMuscular = null;
+  bool isMuscular = true;
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +115,7 @@ class _WizardStepTransportsState  extends State<WizardStepTransports>  {
           )),
           child: Column(
             children: [
-              TwoOptionSelector(leftLabel: "Musculaire", rightLabel: "Electrique", isLeftSelected: isMuscular, onChanged: (v) {setState(() => isMuscular = v);}),
+              TwoOptionSelector(leftLabel: "Musculaire", rightLabel: "Electrique", isLeftSelected: isMuscular, onChanged: (bool? v) {setState(() => isMuscular = v ?? true);} ),
               SizedBox(height: 10),
               Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,

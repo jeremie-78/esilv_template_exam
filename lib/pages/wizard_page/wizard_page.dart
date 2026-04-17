@@ -7,6 +7,8 @@ import 'package:green_track/pages/results_page/results_page.dart';
 import 'package:green_track/res/app_colors.dart';
 
 class WizardPage extends StatefulWidget {
+  const WizardPage({Key? key}) : super(key: key);
+
   @override
   _WizardPageState createState() => _WizardPageState();
 }
@@ -15,17 +17,23 @@ class _WizardPageState extends State<WizardPage> {
   int currentStep = 0;
   final int totalSteps = 3;
 
+  final GlobalKey<WizardStepTransportsState> transportsKey = GlobalKey<WizardStepTransportsState>();
+  final GlobalKey<WizardStepHousingState> housingKey = GlobalKey<WizardStepHousingState>();
+  final GlobalKey<WizardStepConsumptionState> consumptionKey = GlobalKey<WizardStepConsumptionState>();
+
+  late final Widget transportsStep = WizardStepTransports(key: transportsKey);
+  late final Widget housingStep = WizardStepHousing(key: housingKey);
+  late final Widget consumptionStep = WizardStepConsumption(key: consumptionKey);
+
   Widget buildBody() {
-    switch (currentStep) {
-      case 0:
-        return WizardStepTransports();
-      case 1:
-        return WizardStepHousing();
-      case 2:
-        return WizardStepConsumption();
-      default:
-        return Center(child: Text("Terminé !"));
-    }
+    return IndexedStack(
+      index: currentStep,
+      children: <Widget>[
+        transportsStep,
+        housingStep,
+        consumptionStep,
+      ],
+    );
   }
 
   @override
@@ -94,14 +102,28 @@ class _WizardPageState extends State<WizardPage> {
               onPressed: () {
                 if (currentStep < 2) {
                   setState(() => currentStep++);
+                  return;
                 }
-                else
-                {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ResultsPage()),
-                  );
+                final transportsState = transportsKey.currentState;
+                final housingState = housingKey.currentState;
+                final consumptionState = consumptionKey.currentState;
+                if (transportsState == null || housingState == null || consumptionState == null) {
+                  return;
                 }
+                final resultsData = ResultsData(
+                  carKilometersPerYear: transportsState.kilometrageVoiture,
+                  carPassengers: transportsState.selectedPassengers,
+                  bikeKilometersPerYear: transportsState.kilometrageVelo,
+                  bikeType: transportsState.isMuscular ? BikeType.mechanical : BikeType.electric,
+                  housingSurface: housingState.housingSurface,
+                  housingType: housingState.isAppart ? HousingType.apartment : HousingType.house,
+                  heatingSource: housingState.heatingSource,
+                  prefersNewPurchase: consumptionState.prefersNewPurchase,
+                );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ResultsPage(data: resultsData)),
+                );
               },
               child: Text(
                 currentStep == 2 ? "Calculer" : "Continuer",

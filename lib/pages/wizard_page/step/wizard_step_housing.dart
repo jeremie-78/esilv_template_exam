@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:green_track/res/app_colors.dart';
 import 'package:green_track/res/app_icons.dart';
+import 'package:green_track/pages/results_page/results_page.dart';
 import 'package:green_track/pages/wizard_page/two_options_selector.dart';
 
 /// Widgets à utiliser :
@@ -8,20 +9,33 @@ import 'package:green_track/pages/wizard_page/two_options_selector.dart';
 /// - [TextField]
 /// - [RadioGroup] avec [Radio] (regarder la doc de [RadioListTile])
 class WizardStepHousing extends StatefulWidget {
+  const WizardStepHousing({Key? key}) : super(key: key);
+
   @override
-  _WizardStepHousingState createState() => _WizardStepHousingState();
+  WizardStepHousingState createState() => WizardStepHousingState();
 }
 
 
-class _WizardStepHousingState extends State<WizardStepHousing> {
-  double kilometrageVoiture = 12000;
-  int selectedPassengers = 1;
-  double kilometrageVelo = 1000;
-  bool? isAppart;
+class WizardStepHousingState extends State<WizardStepHousing> {
+  bool isAppart = true;
+  int selectedEnergy = 0; // 0 = Bois, 1 = Gaz, 2 = Électrique
+  final TextEditingController surfaceController = TextEditingController(text: '30');
+
+  double get housingSurface => double.tryParse(surfaceController.text) ?? 0.0;
+
+  HeatingSource get heatingSource {
+    switch (selectedEnergy) {
+      case 1:
+        return HeatingSource.gas;
+      case 2:
+        return HeatingSource.electricity;
+      default:
+        return HeatingSource.wood;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    int? selectedEnergy = null; // 0 = Bois, 1 = Gaz, 2 = Électrique
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +74,7 @@ class _WizardStepHousingState extends State<WizardStepHousing> {
             children: [
               Text("Type:", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.primary), textAlign: TextAlign.left),
               SizedBox(height: 10),
-              TwoOptionSelector(leftLabel: "Appartment", rightLabel: "Maison", isLeftSelected: isAppart, onChanged: (v) {setState(() => isAppart = v);}),
+              TwoOptionSelector(leftLabel: "Appartment", rightLabel: "Maison", isLeftSelected: isAppart, onChanged: (bool? v) {setState(() => isAppart = v ?? true);} ),
               SizedBox(height: 10),
               Text("Surface(m2):", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.primary), textAlign: TextAlign.left),
               SizedBox(height: 10),
@@ -83,6 +97,7 @@ class _WizardStepHousingState extends State<WizardStepHousing> {
                     // Champ de saisie
                     Expanded(
                       child: TextField(
+                        controller: surfaceController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: "Ex: 30",
