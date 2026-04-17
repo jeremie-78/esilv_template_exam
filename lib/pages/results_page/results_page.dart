@@ -21,6 +21,7 @@ class ResultsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: GreenTrackAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -32,6 +33,7 @@ class ResultsPage extends StatelessWidget {
                 localizations.section_results,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w700,
+                      color: AppColors.primaryDark
                     ),
               ),
               const SizedBox(height: 24),
@@ -164,10 +166,18 @@ class _ScoreDetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
+    final List<double> values = <double>[
+      data.transportKg / 1000,
+      data.housingKg,
+      data.consumptionKg / 1000,
+    ];
+    final double maxValue = values.reduce(max);
+
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.disabled),
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
@@ -184,6 +194,7 @@ class _ScoreDetailCard extends StatelessWidget {
             localizations.score_details_title,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w700,
+                  color: AppColors.primary
                 ),
           ),
           const SizedBox(height: 16),
@@ -192,6 +203,7 @@ class _ScoreDetailCard extends StatelessWidget {
             icon: Icons.directions_car,
             label: localizations.score_details_label_transports,
             value: data.transportKg / 1000,
+            progress: _normalizeProgress(data.transportKg / 1000, maxValue),
           ),
           const SizedBox(height: 12),
           _buildDetailRow(
@@ -199,6 +211,7 @@ class _ScoreDetailCard extends StatelessWidget {
             icon: Icons.home,
             label: localizations.score_details_label_housing,
             value: data.housingKg,
+            progress: _normalizeProgress(data.housingKg, maxValue),
           ),
           const SizedBox(height: 12),
           _buildDetailRow(
@@ -206,35 +219,61 @@ class _ScoreDetailCard extends StatelessWidget {
             icon: Icons.shopping_bag,
             label: localizations.score_details_label_consumption,
             value: data.consumptionKg / 1000,
+            progress: _normalizeProgress(data.consumptionKg / 1000, maxValue),
           ),
         ],
       ),
     );
   }
 
+  double _normalizeProgress(double value, double maxValue) {
+    if (maxValue <= 0) {
+      return 0;
+    }
+    return (value / maxValue).clamp(0.0, 1.0);
+  }
+
   Widget _buildDetailRow(BuildContext context,
-      {required IconData icon, required String label, required double value}) {
-    return Row(
+      {required IconData icon,
+      required String label,
+      required double value,
+      required double progress}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Container(
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(
-            color: AppColors.cardBackground,
-            borderRadius: BorderRadius.circular(12),
+        Row(
+          children: <Widget>[
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                color: AppColors.cardBackground,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: AppColors.primary, size: 20),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
+            ),
+            Text(
+              '${value.toStringAsFixed(1)} t',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w700),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(999),
+          child: LinearProgressIndicator(
+            minHeight: 10,
+            value: progress,
+            backgroundColor: AppColors.cardBackground,
+            valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
           ),
-          child: Icon(icon, color: AppColors.primary, size: 20),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
-        ),
-        Text(
-          '${value.toStringAsFixed(1)} t',
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(fontWeight: FontWeight.w700),
         ),
       ],
     );
@@ -254,6 +293,7 @@ class _CompensationCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.secondary.withOpacity(0.2),
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.disabled),
       ),
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -263,6 +303,8 @@ class _CompensationCard extends StatelessWidget {
             localizations.score_compensation_title,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   fontWeight: FontWeight.w700,
+                  color: AppColors.primaryDark
+
                 ),
           ),
           const SizedBox(height: 8),
@@ -271,35 +313,50 @@ class _CompensationCard extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: List<Widget>.generate(
-              10,
-              (int index) => const Icon(
-                Icons.park,
-                color: AppColors.primary,
-                size: 22,
-              ),
+          Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: AppColors.disabled),
             ),
-          ),
-          const SizedBox(height: 16),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.circular(999),
-              ),
-              child: Text(
-                '+$trees',
-                style: const TextStyle(
-                  color: AppColors.white,
-                  fontWeight: FontWeight.w700,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: List<Widget>.generate(
+                    10,
+                    (int index) => const Icon(
+                      Icons.park,
+                      color: AppColors.primary,
+                      size: 22,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(height: 16),
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryDark,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                    child: Text(
+                      '+$trees',
+                      style: const TextStyle(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

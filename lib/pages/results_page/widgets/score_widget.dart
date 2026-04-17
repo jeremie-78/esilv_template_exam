@@ -37,7 +37,7 @@ class ScoreWidget extends StatelessWidget {
               Text(
                 score.toStringAsFixed(1),
                 style: TextStyle(
-                  color: valueColor,
+                  color: AppColors.primaryDark,
                   fontSize: 56,
                   fontWeight: FontWeight.w800,
                 ),
@@ -46,7 +46,7 @@ class ScoreWidget extends StatelessWidget {
               Text(
                 unit,
                 style: TextStyle(
-                  color: valueColor.withOpacity(0.65),
+                  color: AppColors.primary,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -55,13 +55,13 @@ class ScoreWidget extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
                 decoration: BoxDecoration(
-                  color: valueColor,
+                  color: AppColors.white,
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
                   label,
-                  style: const TextStyle(
-                    color: AppColors.white,
+                  style: TextStyle(
+                    color: valueColor,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
