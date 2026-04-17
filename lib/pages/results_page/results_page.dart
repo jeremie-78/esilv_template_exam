@@ -5,6 +5,7 @@ import 'package:green_track/l10n/app_localizations.dart';
 import 'package:green_track/pages/results_page/widgets/score_widget.dart';
 import 'package:green_track/pages/shared/app_bar.dart';
 import 'package:green_track/res/app_colors.dart';
+import 'package:green_track/res/app_icons.dart';
 
 enum BikeType { mechanical, electric }
 
@@ -182,7 +183,7 @@ class _ScoreDetailCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.disabled),
+        border: Border.all(color: AppColors.grey),
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
@@ -351,45 +352,63 @@ class _CompensationCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: AppColors.white,
+              color: AppColors.white.withOpacity(0.3),
               borderRadius: BorderRadius.circular(24),
               border: Border.all(color: AppColors.disabled),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: List<Widget>.generate(
-                    10,
-                    (int index) => const Icon(
-                      Icons.park,
-                      color: AppColors.primary,
-                      size: 22,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryDark,
-                      borderRadius: BorderRadius.circular(999),
-                    ),
-                    child: Text(
-                      '+$trees',
-                      style: const TextStyle(
-                        color: AppColors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
+                Builder(
+                  builder: (BuildContext context) {
+                    final int rows = min(3, trees ~/ 10);
+                    final int badgeCount = max(0, trees - rows * 10);
+
+                    return Column(
+                      children: <Widget>[
+                        ...List<Widget>.generate(
+                          rows,
+                          (int rowIndex) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List<Widget>.generate(
+                                11,
+                                (int index) => const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4.5),
+                                  child: Icon(
+                                    AppIcons.forest,
+                                    color: AppColors.primary,
+                                    size: 22,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: 90,
+                            height: 26,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryDark,
+                              borderRadius: BorderRadius.circular(999),
+                            ),
+                            child: Text(
+                              '+$badgeCount',
+                              style: const TextStyle(
+                                color: AppColors.white,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),

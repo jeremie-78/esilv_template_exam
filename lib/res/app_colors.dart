@@ -9,6 +9,7 @@ class AppColors {
   static const Color tertiary = Color(0xFF5D6B5A);
   static const Color neutral = Color(0xFFF5F5F0);
   static const Color disabled = Color(0xFFC3C8BC);
+  static const Color grey = Color(0xFFE2E2DF);
 
   static const Color cardBackground = Color(0xFFF4F4F0);
   static const Color cardContainer = Color(0xFFC3C8BC);
