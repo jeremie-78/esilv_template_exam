@@ -29,13 +29,18 @@ class ResultsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Text(
-                localizations.section_results,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.primaryDark
-                    ),
+              SizedBox(
+            width: 148,
+            height: 33,
+            child: Text(
+              localizations.section_results,
+              style: const TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w900,
+                color: AppColors.primaryDark,
               ),
+            ),
+          ),
               const SizedBox(height: 24),
               Center(
                 child: ScoreWidget(
@@ -190,12 +195,17 @@ class _ScoreDetailCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text(
-            localizations.score_details_title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primary
-                ),
+          SizedBox(
+            width: 203,
+            height: 25,
+            child: Text(
+              localizations.score_details_title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
+                color: AppColors.primary,
+              ),
+            ),
           ),
           const SizedBox(height: 16),
           _buildDetailRow(
@@ -243,25 +253,32 @@ class _ScoreDetailCard extends StatelessWidget {
       children: <Widget>[
         Row(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: 40,
               width: 40,
-              decoration: BoxDecoration(
-                color: AppColors.cardBackground,
-                borderRadius: BorderRadius.circular(12),
-              ),
               child: Icon(icon, color: AppColors.primary, size: 20),
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
+              child: Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primaryDark,
+                ),
+              ),
             ),
+            const SizedBox(width: 8),
             Text(
               '${value.toStringAsFixed(1)} t',
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.w700),
+                  ?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryDark,
+                  ),
             ),
           ],
         ),
@@ -299,18 +316,36 @@ class _CompensationCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text(
-            localizations.score_compensation_title,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primaryDark
-
-                ),
+          SizedBox(
+            width: 145,
+            height: 25,
+            child: Text(
+              localizations.score_compensation_title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
+                color: AppColors.primaryDark,
+              ),
+            ),
           ),
           const SizedBox(height: 8),
-          Text(
-            localizations.score_compensation_label(trees),
-            style: Theme.of(context).textTheme.bodyMedium,
+          RichText(
+            text: TextSpan(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.primaryDark,
+                  ),
+              children: <TextSpan>[
+                const TextSpan(text: 'Il faudrait planter '),
+                TextSpan(
+                  text: '$trees arbres',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryDark,
+                  ),
+                ),
+                const TextSpan(text: ' pour compenser votre empreinte actuelle.'),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
           Container(
